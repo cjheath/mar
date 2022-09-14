@@ -1,0 +1,157 @@
+.TH MAR 1 
+.UC 4
+.SH NAME
+mar \- MS/DOS* transfer utility
+.SH SYNOPSIS
+.B mar
+key device [ file ... ]
+.SH AUTHOR
+Clifford Heath, Hewlett Packard Australian Software Operation.
+.SH DESCRIPTION
+.I Mar
+maintains a MS/DOS compatible file system using a syntax similar to
+.IR ar(1).
+.PP
+.I Key
+is one character from the set
+.B tcrxd,
+optionally concatenated with
+one or more of
+.B vamMfFejo.
+.I Device
+is the file or device for the MS/DOS file system,
+which will be created if necessary after a
+.B y
+response to the query.
+The meanings of the
+.I key
+characters are:
+.TP
+.B t
+Print a table of contents.
+Any files specified are just listed.
+Any directories specified are listed recursively,
+(i.e. all the subdirectories are also listed).
+If no files or directories are specified,
+a recursive listing of the entire device will be produced.
+When used with
+.B v
+will give a long listing containing
+attributes (h = hidden, s = system, d = directory, r = readonly),
+time, date, size and name of files.
+Without
+.B v
+option gives just the pathname of the file.
+.TP
+.B c
+Clobber ALL files on the device,
+then add any files specified.
+This will elicit a warning,
+and can only be used interactively.
+Used to create a new file system.
+See note under replace.
+.TP
+.B r
+Replace the named files on the device.
+Any previous copies of the files are overwritten.
+.br
+NOTE:
+Any file that is a UNIX directory will be created as an empty directory
+(i.e. the contents of the directory will not be added).
+Any directories required
+to construct the file pathnames
+specified will be created.
+.TP
+.B x
+Extract the named files/directories.
+Directories are extracted recursively;
+this may result in the creation of UNIX directories.
+If no names are given, all files in the archive are
+extracted.
+In neither case does
+.B x
+alter the contents of the device.
+.TP
+.B d
+Delete files from the device.
+If no files are specified,
+delete all files
+(This will elicit a warning, and can only be used interactively).
+.sp 2
+.SH OPTIONS
+.TP
+.B v
+Verbose.
+Under the verbose option,
+.I mar
+gives a file-by-file
+description of what it is doing
+in the format
+.br
+z - filename
+.br
+where z is r, d or x.
+See description of the use of this option with
+.B t.
+.TP
+.B a
+Use "ascii" mode.
+In option 
+.B r
+carriage returns are inserted before newlines on the copy.
+In option
+.B x
+newlines are deleted,
+carriage returns are replaced by newlines,
+and the MS/DOS end-of-file marker (control-Z)
+is interpreted to mean end of cluster (file space allocation unit).
+.SH "DEVICE FORMATS
+The following characters identify builtin device formats as follows:
+.TP
+.B m
+3 1/2" HP150 single sided micro- or 5 1/4" mini- floppy (DEFAULT)
+.TP
+.B M
+3 1/2" HP150 double sided micro floppy
+.TP
+.B f
+8" IBM format floppy
+.TP
+.B F
+8" HP150 floppy
+.TP
+.B e
+5 Mb HP150 Winchester
+.TP
+.B j
+10 Mb HP150 Winchester
+.TP
+.B o
+15 Mb HP150 Winchester
+.TP
+.B pI,J,K,L,M,N,O,P
+User defined disk format.
+.br
+I = Sector size in bytes.
+.br
+J = Number of sectors in a cluster.
+.br
+K = Number of sectors before first sector of first FAT.
+.br
+M = Number of sectors in root directory.
+.br
+N = Number of sectors in a single FAT.
+.br
+O = Number of copies of the FAT.
+.br
+P = Number of CLUSTERS after boot area, FATs and root dir.
+.sp
+(FAT is File Allocation Table)
+.SH BUGS
+Created MS/DOS directories do not contain the . and .. entries.
+No non-recursive directory list.
+No non-recursive extract (without full list of filenames).
+No recursive replace (need to use `find(1)`).
+No way to mark files hidden, system etc.
+.br
+* MS/DOS is a trademark of Microsoft Ltd.
